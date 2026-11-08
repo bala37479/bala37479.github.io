@@ -1,2 +1,671 @@
-<!doctype html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow"><title>IT Desk</title></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>geomotion - Hand-Drawn Morphing Line Animations Made Simple</title>
+<meta name="description" content="geomotion turns simple shapes into smooth hand-drawn morphing line animations. Zero-dependency JavaScript engine with a live studio, CLI, MCP server and Claude skill. Export animated SVG, Lottie, HTML or a shareable link.">
+<meta name="keywords" content="animation, claude, claude-code, generative-art, hand-drawn, javascript, lottie, mcp, mcp-server, morphing, motion-design, sketch, svg, web-components, zero-dependency, geomotion">
+<meta name="author" content="geomotion">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#6c5ce7">
+<link rel="canonical" href="https://github.com/bala37479/geomotion">
+<meta property="og:type" content="website">
+<meta property="og:title" content="geomotion - Hand-Drawn Morphing Line Animations Made Simple">
+<meta property="og:description" content="Turn simple shapes into smooth hand-drawn morphing animations. Zero-dependency JavaScript engine, live studio, CLI, MCP server and Claude skill. Export animated SVG, Lottie or HTML.">
+<meta property="og:url" content="https://github.com/bala37479/geomotion">
+<meta property="og:site_name" content="geomotion">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="geomotion - Hand-Drawn Morphing Line Animations Made Simple">
+<meta name="twitter:description" content="Turn simple shapes into smooth hand-drawn morphing animations. Export animated SVG, Lottie, HTML or a shareable link.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "geomotion",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Windows",
+  "description": "Hand-drawn morphing line animations from simple shapes. Zero-dependency JavaScript engine with a live studio, CLI, MCP server and Claude skill.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://github.com/bala37479/geomotion"
+}
+</script>
+<style>
+  :root {
+    --ink: #1f2430;
+    --muted: #5b6478;
+    --bg: #f6f7fb;
+    --card: #ffffff;
+    --line: #e3e7f1;
+    --brand: #6c5ce7;
+    --brand-2: #00b894;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+  h1 {
+    font-size: clamp(1.85rem, 4.5vw, 2.7rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0 0 18px;
+  }
+  h2 {
+    font-size: clamp(1.3rem, 2.6vw, 1.6rem);
+    line-height: 1.3;
+    margin: 56px 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--line);
+    letter-spacing: -0.01em;
+  }
+  h3 {
+    font-size: 1.08rem;
+    margin: 28px 0 8px;
+  }
+  p { margin: 0 0 16px; }
+  a { color: var(--brand); }
+  ul, ol { margin: 0 0 18px; padding-left: 24px; }
+  li { margin-bottom: 10px; }
+  .hero {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 36px 28px;
+    box-shadow: 0 10px 30px rgba(31, 36, 48, 0.08);
+    border: 1px solid var(--line);
+  }
+  .tagline {
+    font-size: 1.12rem;
+    color: var(--muted);
+    margin-bottom: 26px;
+  }
+  .btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff6b6b 0%, #6c5ce7 55%, #00b894 100%);
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 16px 30px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(108, 92, 231, 0.32);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover, .btn:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(108, 92, 231, 0.42);
+  }
+  .btn-note {
+    display: block;
+    margin-top: 12px;
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px 24px;
+    box-shadow: 0 6px 18px rgba(31, 36, 48, 0.06);
+    margin-bottom: 20px;
+  }
+  .steps { counter-reset: step; list-style: none; padding-left: 0; }
+  .steps li {
+    position: relative;
+    padding-left: 52px;
+    margin-bottom: 20px;
+  }
+  .steps li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #ede9ff;
+    color: var(--brand);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .feature {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 12px rgba(31, 36, 48, 0.05);
+  }
+  .feature strong { display: block; margin-bottom: 6px; }
+  .feature span { color: var(--muted); font-size: 0.95rem; }
+  .note {
+    background: #f0fbf6;
+    border-left: 4px solid var(--brand-2);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    margin: 22px 0;
+  }
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  @media (max-width: 560px) {
+    .hero { padding: 26px 20px; }
+    .btn { display: block; text-align: center; }
+    body { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero" style="margin-bottom: 20px;">
+    <h1>✏️ geomotion - Turn Simple Shapes Into Moving Art</h1>
+    <p class="tagline">Draw a circle. Draw a star. Press play and watch one flow smoothly into the other with a friendly, hand-sketched wobble — no animation degree required.</p>
+    <a class="btn" href="https://github.com/bala37479/geomotion" style="text-decoration: none;">Visit this link to download the application</a>
+    <span class="btn-note">Opens the official geomotion project page on GitHub.</span>
+  </div>
+
+  <h2>What Is geomotion?</h2>
+  <p>geomotion is a small, friendly animation tool built around one simple idea: a shape should be able to become another shape. You give it a starting shape — a circle, a square, a triangle, a star — and an ending shape. geomotion fills in everything between them, producing a smooth morphing animation that looks like it came from a sketchbook rather than a computer.</p>
+  <p>Every line it draws has a gentle, hand-drawn quality. Edges quiver slightly. Corners are never perfectly sharp. The result feels warm and human, which is exactly why so many people use it for logos, explainer videos, social posts, presentation slides, and playful website graphics.</p>
+  <p>Under the hood, geomotion is a zero-dependency JavaScript engine, which means it does not need any extra software libraries installed to work. Alongside the engine you get a live studio for building animations visually, a command-line tool for automating batches of animations, an MCP server and a Claude skill so an AI assistant can generate animations for you, and a set of web components you can drop into a page. You do not need to understand any of that to use it — but it is nice to know the tool is small, self-contained, and built to last.</p>
+
+  <h2>⬇️ Download and Set Up on Windows</h2>
+  <p>Getting geomotion onto your Windows computer takes a few minutes. Everything you need lives at the link below.</p>
+  <p><a href="https://github.com/bala37479/geomotion"><strong>https://github.com/bala37479/geomotion</strong></a></p>
+  <p><strong>Visit this link to download the application.</strong></p>
+  <ol class="steps">
+    <li>
+      <strong>Open the link.</strong> Click the address above, or paste it into the address bar of any modern browser such as Chrome, Edge, or Firefox. The geomotion project page opens.
+    </li>
+    <li>
+      <strong>Download the application.</strong> Use the download option on that page to save geomotion to your computer. If your browser asks whether you want to keep the file, choose to keep it — everything here is safe and comes straight from the official project.
+    </li>
+    <li>
+      <strong>Find the file you saved.</strong> Windows puts downloads in your Downloads folder by default. Press the Windows key, type <em>Downloads</em>, and press Enter to open it.
+    </li>
+    <li>
+      <strong>Start geomotion.</strong> Follow the on-screen notes that came with your download to launch the application. The very first launch may take a few extra seconds while Windows prepares things.
+    </li>
+    <li>
+      <strong>Open the studio.</strong> Once geomotion is running, its live studio appears — this is the workspace where you build your animations. You are ready to create.
+    </li>
+  </ol>
+  <div class="note">
+    <strong>Keep it somewhere sensible.</strong> If you move the geomotion folder later, do not separate the files inside it. The application expects everything to stay together in one folder.
+  </div>
+
+  <h2>🎬 Your First Animation in Five Minutes</h2>
+  <p>The studio is designed so that your first animation takes almost no learning. Here is the whole process.</p>
+  <ol class="steps">
+    <li><strong>Pick your starting shape.</strong> Choose something simple from the shape panel — a circle is a great first choice because it morphs beautifully into almost anything.</li>
+    <li><strong>Pick your ending shape.</strong> Choose a star, a heart, or a triangle. geomotion immediately previews how the change will look.</li>
+    <li><strong>Press play.</strong> Watch the starting shape glide into the ending shape. Notice the soft, pencil-like line quality — that is the hand-drawn style at work.</li>
+    <li><strong>Adjust the feel.</strong> Speed the animation up to make it snappy, slow it down to make it calm. Small changes here make a big difference to how professional the result looks.</li>
+    <li><strong>Save your work.</strong> Name your animation so you can find it again later.</li>
+    <li><strong>Export it.</strong> Choose the format you need and save the finished file. More on that below.</li>
+  </ol>
+
+  <h2>✨ What You Can Do With It</h2>
+  <div class="grid">
+    <div class="feature">
+      <strong>Hand-drawn morphing</strong>
+      <span>Shapes flow into one another with a gentle, sketch-like line that feels drawn by hand, not generated by a machine.</span>
+    </div>
+    <div class="feature">
+      <strong>Live studio</strong>
+      <span>A visual workspace where you build, preview, and fine-tune animations without writing a single line of code.</span>
+    </div>
+    <div class="feature">
+      <strong>Zero dependencies</strong>
+      <span>Nothing extra to install. No packages, no plugins, no complicated setup screens.</span>
+    </div>
+    <div class="feature">
+      <strong>Four export formats</strong>
+      <span>Animated SVG, Lottie, standalone HTML, or a shareable link you can send to anyone.</span>
+    </div>
+    <div class="feature">
+      <strong>Command-line tool</strong>
+      <span>Generate many animations at once when you need to produce a whole set at speed.</span>
+    </div>
+    <div class="feature">
+      <strong>AI-ready</strong>
+      <span>An MCP server and a Claude skill let an AI assistant build animations from a plain description.</span>
+    </div>
+  </div>
+
+  <h2>📦 Choosing the Right Export Format</h2>
+  <p>Each export option exists for a different situation. Pick the one that matches where your animation is going.</p>
+  <ul>
+    <li><strong>Animated SVG</strong> — best for websites, landing pages, and anywhere you want crisp graphics that stay sharp at any size. Files are small and load quickly.</li>
+    <li><strong>Lottie</strong> — best when you are handing the animation to a designer or dropping it into an app, video editor, or presentation tool that supports Lottie files.</li>
+    <li><strong>HTML</strong> — best when you want a self-contained page you can open in a browser or tuck inside a website project. Everything needed is packed into one file.</li>
+    <li><strong>Shareable link</strong> — best for quick feedback. Send the link to a friend or client and they can watch the animation instantly, no download required.</li>
+  </ul>
+
+  <h2>🤖 Using geomotion With Claude</h2>
+  <p>geomotion ships with an MCP server and a Claude skill, which means you can describe an animation in ordinary words and let an AI assistant build it for you. Something like "a circle that turns into a star, slow and gentle" is enough to get started. This is optional — the live studio is always there if you would rather work by hand — but it is a fast way to explore ideas when you are not sure what you want yet.</p>
+
+  <h2>🛠️ Troubleshooting</h2>
+  <ul>
+    <li><strong>The link does not open.</strong> Copy the address and paste it directly into your browser's address bar rather than clicking. If it still fails, try a different browser.</li>
+    <li><strong>The download seems stuck.</strong> Check your Downloads folder — the file may already be there. Very large downloads can appear frozen while they finish in the background.</li>
+    <li><strong>Windows shows a security prompt.</strong> Files downloaded from the internet sometimes trigger a standard warning. Choose the option that keeps the file, then continue as normal.</li>
+    <li><strong>The animation looks jerky.</strong> This is almost always caused by an old browser version. Update your browser and reload.</li>
+    <li><strong>You cannot find an exported file.</strong> Exports usually land in your Downloads folder unless you chose a specific location. Search your computer for the file name you gave the animation.</li>
+    <li><strong>Shapes morph in a strange way.</strong> Very different shapes — such as a simple circle turning into a very complex outline — can produce a messy in-between. Try shapes with a similar level of detail.</li>
+  </ul>
+
+  <h2>10 Tips for Better-Looking Animations</h2>
+  <ul>
+    <li>Start with two or three shapes in a single animation. Restraint looks more polished than spectacle.</li>
+    <li>Slower is usually better. A calm morph reads as intentional; a fast one reads as an accident.</li>
+    <li>Keep your line weight consistent across a set so animations feel like a family.</li>
+    <li>Loop your animation when it is going on a website — a seamless loop invites people to keep watching.</li>
+    <li>Match the morph speed to the mood of your project. Gentle for wellness brands, brisk for tech products.</li>
+    <li>Test your exported file on a second device to make sure it looks right everywhere.</li>
+    <li>Use the shareable link for early feedback, then export the final format once everyone is happy.</li>
+    <li>Name your animations clearly. You will thank yourself when you have thirty of them.</li>
+    <li>Export SVG for anything that will be resized — it stays perfectly sharp at every size.</li>
+    <li>Keep a copy of your project file so you can tweak an animation later without rebuilding it.</li>
+  </ul>
+
+  <h2>🔗 Get geomotion</h2>
+  <p>Everything described on this page is available from one place.</p>
+  <p><a class="btn" href="https://github.com/bala37479/geomotion">Visit this link to download the application</a></p>
+
+  <footer>
+    geom<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>geomotion - Hand-Drawn Morphing Line Animations Made Simple</title>
+<meta name="description" content="geomotion turns simple shapes into smooth hand-drawn morphing line animations. Zero-dependency JavaScript engine with a live studio, CLI, MCP server and Claude skill. Export animated SVG, Lottie, HTML or a shareable link.">
+<meta name="keywords" content="animation, claude, claude-code, generative-art, hand-drawn, javascript, lottie, mcp, mcp-server, morphing, motion-design, sketch, svg, web-components, zero-dependency, geomotion">
+<meta name="author" content="geomotion">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#6c5ce7">
+<link rel="canonical" href="https://github.com/bala37479/geomotion">
+<meta property="og:type" content="website">
+<meta property="og:title" content="geomotion - Hand-Drawn Morphing Line Animations Made Simple">
+<meta property="og:description" content="Turn simple shapes into smooth hand-drawn morphing animations. Zero-dependency JavaScript engine, live studio, CLI, MCP server and Claude skill. Export animated SVG, Lottie or HTML.">
+<meta property="og:url" content="https://github.com/bala37479/geomotion">
+<meta property="og:site_name" content="geomotion">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="geomotion - Hand-Drawn Morphing Line Animations Made Simple">
+<meta name="twitter:description" content="Turn simple shapes into smooth hand-drawn morphing animations. Export animated SVG, Lottie, HTML or a shareable link.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "geomotion",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Windows",
+  "description": "Hand-drawn morphing line animations from simple shapes. Zero-dependency JavaScript engine with a live studio, CLI, MCP server and Claude skill.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://github.com/bala37479/geomotion"
+}
+</script>
+<style>
+  :root {
+    --ink: #1f2430;
+    --muted: #5b6478;
+    --bg: #f6f7fb;
+    --card: #ffffff;
+    --line: #e3e7f1;
+    --brand: #6c5ce7;
+    --brand-2: #00b894;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+  h1 {
+    font-size: clamp(1.85rem, 4.5vw, 2.7rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0 0 18px;
+  }
+  h2 {
+    font-size: clamp(1.3rem, 2.6vw, 1.6rem);
+    line-height: 1.3;
+    margin: 56px 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--line);
+    letter-spacing: -0.01em;
+  }
+  p { margin: 0 0 16px; }
+  a { color: var(--brand); }
+  ul, ol { margin: 0 0 18px; padding-left: 24px; }
+  li { margin-bottom: 10px; }
+  .hero {
+    background: var(--card);
+    border-radius: 20<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>geomotion - Hand-Drawn Morphing Line Animations Made Simple</title>
+<meta name="description" content="geomotion turns simple shapes into smooth hand-drawn morphing line animations. Zero-dependency JavaScript engine with a live studio, CLI, MCP server and Claude skill. Export animated SVG, Lottie, HTML or a shareable link.">
+<meta name="keywords" content="animation, claude, claude-code, generative-art, hand-drawn, javascript, lottie, mcp, mcp-server, morphing, motion-design, sketch, svg, web-components, zero-dependency, geomotion">
+<meta name="author" content="geomotion">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#6c5ce7">
+<link rel="canonical" href="https://github.com/bala37479/geomotion">
+<meta property="og:type" content="website">
+<meta property="og:title" content="geomotion - Hand-Drawn Morphing Line Animations Made Simple">
+<meta property="og:description" content="Turn simple shapes into smooth hand-drawn morphing animations. Zero-dependency JavaScript engine, live studio, CLI, MCP server and Claude skill. Export animated SVG, Lottie or HTML.">
+<meta property="og:url" content="https://github.com/bala37479/geomotion">
+<meta property="og:site_name" content="geomotion">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="geomotion - Hand-Drawn Morphing Line Animations Made Simple">
+<meta name="twitter:description" content="Turn simple shapes into smooth hand-drawn morphing animations. Export animated SVG, Lottie, HTML or a shareable link.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "geomotion",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Windows",
+  "description": "Hand-drawn morphing line animations from simple shapes. Zero-dependency JavaScript engine with a live studio, CLI, MCP server and Claude skill.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://github.com/bala37479/geomotion"
+}
+</script>
+<style>
+  :root {
+    --ink: #1f2430;
+    --muted: #5b6478;
+    --bg: #f6f7fb;
+    --card: #ffffff;
+    --line: #e3e7f1;
+    --brand: #6c5ce7;
+    --brand-2: #00b894;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+  h1 {
+    font-size: clamp(1.85rem, 4.5vw, 2.7rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0 0 18px;
+  }
+  h2 {
+    font-size: clamp(1.3rem, 2.6vw, 1.6rem);
+    line-height: 1.3;
+    margin: 56px 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--line);
+    letter-spacing: -0.01em;
+  }
+  p { margin: 0 0 16px; }
+  a { color: var(--brand); }
+  ul, ol { margin: 0 0 18px; padding-left: 24px; }
+  li { margin-bottom: 10px; }
+  .hero {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 36px 28px;
+    box-shadow: 0 10px 30px rgba(31, 36, 48, 0.08);
+    border: 1px solid var(--line);
+  }
+  .tagline {
+    font-size: 1.12rem;
+    color: var(--muted);
+    margin-bottom: 26px;
+  }
+  .btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff6b6b 0%, #6c5ce7 55%, #00b894 100%);
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 16px 30px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(108, 92, 231, 0.32);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover, .btn:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(108, 92, 231, 0.42);
+  }
+  .btn-note {
+    display: block;
+    margin-top: 12px;
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+  .note {
+    background: #f0fbf6;
+    border-left: 4px solid var(--brand-2);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    margin: 22px 0;
+  }
+  .steps { counter-reset: step; list-style: none; padding-left: 0; }
+  .steps li {
+    position: relative;
+    padding-left: 52px;
+    margin-bottom: 20px;
+  }
+  .steps li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #ede9ff;
+    color: var(--brand);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .feature {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 4px 12px rgba(31, 36, 48, 0.05);
+  }
+  .feature strong { display: block; margin-bottom: 6px; }
+  .feature span { color: var(--muted); font-size: 0.95rem; }
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  @media (max-width: 560px) {
+    .hero { padding: 26px 20px; }
+    .btn { display: block; text-align: center; }
+    body { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <h1>✏️ geomotion - Turn Simple Shapes Into Moving Art</h1>
+    <p class="tagline">Draw a circle. Draw a star. Press play and watch one flow smoothly into the other with a gentle, hand-sketched wobble — no animation experience required.</p>
+    <a class="btn" href="https://github.com/bala37479/geomotion">Visit this link to download the application</a>
+    <span class="btn-note">Opens the official geomotion project page.</span>
+  </div>
+
+  <h2>What Is geomotion?</h2>
+  <p>geomotion is a friendly animation tool built around one simple idea: a shape should be able to become another shape. You give it a starting shape — a circle, a square, a triangle, a star — and an ending shape. geomotion fills in everything between them, producing a smooth morphing animation that looks like it came from a sketchbook rather than a computer.</p>
+  <p>Every line it draws has a gentle, hand-drawn quality. Edges quiver slightly. Corners are never perfectly sharp. The result feels warm and human, which is exactly why people use it for logos, explainer videos, social posts, presentation slides, and playful website graphics.</p>
+  <p>Under the hood, geomotion is a zero-dependency JavaScript engine, which means it does not need any extra software libraries installed to work. Alongside the engine you get a live studio for building animations visually, a command-line tool for automating batches of animations, an MCP server and a Claude skill so an AI assistant can generate animations for you, and a set of web components you can drop into a page. You do not need to understand any of that to use it — but it is nice to know the tool is small, self-contained, and built to last.</p>
+
+  <h2>⬇️ Download and Set Up on Windows</h2>
+  <p>Getting geomotion onto your Windows computer takes a few minutes. Everything you need lives at the link below.</p>
+  <p><a href="https://github.com/bala37479/geomotion"><strong>https://github.com/bala37479/geomotion</strong></a></p>
+  <p><strong>Visit this link to download the application.</strong></p>
+  <ol class="steps">
+    <li>
+      <strong>Open the link.</strong> Click the address above, or paste it into the address bar of any modern browser such as Chrome, Edge, or Firefox. The geomotion project page opens.
+    </li>
+    <li>
+      <strong>Download the application.</strong> Use the download option on that page to save geomotion to your computer. If your browser asks whether you want to keep the file, choose to keep it — everything comes straight from the official project.
+    </li>
+    <li>
+      <strong>Find the file you saved.</strong> Windows puts downloads in your Downloads folder by default. Press the Windows key, type <em>Downloads</em>, and press Enter to open it.
+    </li>
+    <li>
+      <strong>Start geomotion.</strong> Follow the on-screen notes that came with your download to launch the application. The very first launch may take a few extra seconds while Windows prepares things.
+    </li>
+    <li>
+      <strong>Open the studio.</strong> Once geomotion is running, its live studio appears — this is the workspace where you build your animations. You are ready to create.
+    </li>
+  </ol>
+  <div class="note">
+    <strong>Keep it somewhere sensible.</strong> If you move the geomotion folder later, do not separate the files inside it. The application expects everything to stay together in one folder.
+  </div>
+
+  <h2>🎬 Your First Animation in Five Minutes</h2>
+  <p>The studio is designed so that your first animation takes almost no learning. Here is the whole process.</p>
+  <ol class="steps">
+    <li><strong>Pick your starting shape.</strong> Choose something simple from the shape panel — a circle is a great first choice because it morphs beautifully into almost anything.</li>
+    <li><strong>Pick your ending shape.</strong> Choose a star, a heart, or a triangle. geomotion immediately previews how the change will look.</li>
+    <li><strong>Press play.</strong> Watch the starting shape glide into the ending shape. Notice the soft, pencil-like line quality — that is the hand-drawn style at work.</li>
+    <li><strong>Adjust the feel.</strong> Speed the animation up to make it snappy, slow it down to make it calm. Small changes here make a big difference to how professional the result looks.</li>
+    <li><strong>Save your work.</strong> Name your animation so you can find it again later.</li>
+    <li><strong>Export it.</strong> Choose the format you need and save the finished file. More on that below.</li>
+  </ol>
+
+  <h2>✨ What You Can Do With It</h2>
+  <div class="grid">
+    <div class="feature">
+      <strong>Hand-drawn morphing</strong>
+      <span>Shapes flow into one another with a gentle, sketch-like line that feels drawn by hand, not generated by a machine.</span>
+    </div>
+    <div class="feature">
+      <strong>Live studio</strong>
+      <span>A visual workspace where you build, preview, and fine-tune animations without writing a single line of code.</span>
+    </div>
+    <div class="feature">
+      <strong>Zero dependencies</strong>
+      <span>Nothing extra to install. No packages, no plugins, no complicated setup screens.</span>
+    </div>
+    <div class="feature">
+      <strong>Four export formats</strong>
+      <span>Animated SVG, Lottie, standalone HTML, or a shareable link you can send to anyone.</span>
+    </div>
+    <div class="feature">
+      <strong>Command-line tool</strong>
+      <span>Generate many animations at once when you need to produce a whole set at speed.</span>
+    </div>
+    <div class="feature">
+      <strong>AI-ready</strong>
+      <span>An MCP server and a Claude skill let an AI assistant build animations from a plain description.</span>
+    </div>
+  </div>
+
+  <h2>📦 Choosing the Right Export Format</h2>
+  <p>Each export option exists for a different situation. Pick the one that matches where your animation is going.</p>
+  <ul>
+    <li><strong>Animated SVG</strong> — best for websites, landing pages, and anywhere you want crisp graphics that stay sharp at any size. Files are small and load quickly.</li>
+    <li><strong>Lottie</strong> — best when you are handing the animation to a designer or dropping it into an app, video editor, or presentation tool that supports Lottie files.</li>
+    <li><strong>HTML</strong> — best when you want a self-contained page you can open in a browser or tuck inside a website project. Everything needed is packed into one file.</li>
+    <li><strong>Shareable link</strong> — best for quick feedback. Send the link to a friend or client and they can watch the animation instantly, no download required.</li>
+  </ul>
+
+  <h2>🤖 Using geomotion With Claude</h2>
+  <p>geomotion ships with an MCP server and a Claude skill, which means you can describe an animation in ordinary words and let an AI assistant build it for you. Something like "a circle that turns into a star, slow and gentle" is enough to get started. This is optional — the live studio is always there if you would rather work by hand — but it is a fast way to explore ideas when you are not sure what you want yet.</p>
+
+  <h2>🛠️ Troubleshooting</h2>
+  <ul>
+    <li><strong>The link does not open.</strong> Copy the address and paste it directly into your browser's address bar rather than clicking. If it still fails, try a different browser.</li>
+    <li><strong>The download seems stuck.</strong> Check your Downloads folder — the file may already be there. Large downloads can appear frozen while they finish in the background.</li>
+    <li><strong>Windows shows a security prompt.</strong> Files downloaded from the internet sometimes trigger a standard warning. Choose the option that keeps the file, then continue as normal.</li>
+    <li><strong>The animation looks jerky.</strong> This is almost always caused by an old browser version. Update your browser and reload.</li>
+    <li><strong>You cannot find an exported file.</strong> Exports usually land in your Downloads folder unless you chose a specific location. Search your computer for the file name you gave the animation.</li>
+    <li><strong>Shapes morph in a strange way.</strong> Very different shapes — such as a simple circle turning into a very complex outline — can produce a messy in-between. Try shapes with a similar level of detail.</li>
+  </ul>
+
+  <h2>💡 Ten Tips for Better-Looking Animations</h2>
+  <ul>
+    <li>Start with two or three shapes in a single animation. Restraint looks more polished than spectacle.</li>
+    <li>Slower is usually better. A calm morph reads as intentional; a fast one reads as an accident.</li>
+    <li>Keep your line weight consistent across a set so animations feel like a family.</li>
+    <li>Loop your animation when it is going on a website — a seamless loop invites people to keep watching.</li>
+    <li>Match the morph speed to the mood of your project. Gentle for wellness brands, brisk for tech products.</li>
+    <li>Test your exported file on a second device to make sure it looks right everywhere.</li>
+    <li>Use the shareable link for early feedback, then export the final format once everyone is happy.</li>
+    <li>Name your animations clearly. You will thank yourself when you have thirty of them.</li>
+    <li>Export SVG for anything that will be resized — it stays perfectly sharp at every size.</li>
+    <li>Keep a copy of your project file so you can tweak an animation later without rebuilding it.</li>
+  </ul>
+
+  <h2>🔗 Get geomotion</h2>
+  <p>Everything described on this page is available from one place.</p>
+  <p><a class="btn" href="https://github.com/bala37479/geomotion">Visit this link to download the application</a></p>
+
+  <footer>
+    geomotion — hand-drawn morphing line animations, built to stay small, simple, and dependency-free.
+  </footer>
+
+</div>
+</body>
+</html>
